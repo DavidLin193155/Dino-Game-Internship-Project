@@ -89,4 +89,12 @@ while running:
 
     clock.tick(60)  # Limits game loop to 60 FPS
 
+def display_score()
+    current time = pygame.time.get_ticks()
+    score_surf = test_font.render(f'{current_time}',False,(64,64,64))
+    score_rect = score_surf.get_rect(center = (400,50))
+    screen.blit(score_surf,score_rect)
+    print(current_time)
+    
+
 pygame.quit()
