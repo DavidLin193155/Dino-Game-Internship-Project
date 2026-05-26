@@ -17,8 +17,8 @@ start_time = 0
 score = 0
 
 def display_score():
-    current_time = pygame.time.get_ticks() - start_time
-    score_surf = test_font.render(f'{current_time}',False,(64,64,64))
+    current_time = int(pygame.time.get_ticks() / 1000) - start_time
+    score_surf = test_font.render(f'SCORE: {current_time}',False,(64,64,64))
     score_rect = score_surf.get_rect(center = (400,50))
     screen.blit(score_surf,score_rect)
 
@@ -62,7 +62,7 @@ while running:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 is_playing = True
                 egg_rect.left = 800
-                start_time = pygame.time.get_ticks()
+                start_time = int(pygame.time.get_ticks() / 1000)
 
     if is_playing:
         screen.fill("purple")  # Wipe the screen
