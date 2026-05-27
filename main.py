@@ -40,6 +40,8 @@ player_surf = pygame.image.load("graphics/player/player_walk_1.png").convert_alp
 player_rect = player_surf.get_rect(bottomleft=(25, GROUND_Y))
 egg_surf = pygame.image.load("graphics/egg/egg_1.png").convert_alpha()
 egg_rect = egg_surf.get_rect(bottomleft=(800, GROUND_Y))
+player_stand = pygame.image.load()('graphics/player/player_stand.png').convert_alpha()
+player_stand_rect = player_stand.get_rect(center = (400,200))
 
 
 while running:
@@ -94,7 +96,8 @@ while running:
 
     # When game is over, display game over message
     else: 
-        screen.fill("black")
+        screen.fill(94, 129, 162)
+        screen.blit(player_stand, player_stand_rect)
 
     # flip the display to put your work on screen
     pygame.display.flip()
