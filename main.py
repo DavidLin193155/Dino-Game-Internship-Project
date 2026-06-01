@@ -41,7 +41,8 @@ player_rect = player_surf.get_rect(bottomleft=(25, GROUND_Y))
 egg_surf = pygame.image.load("graphics/egg/egg_1.png").convert_alpha()
 egg_rect = egg_surf.get_rect(bottomleft=(800, GROUND_Y))
 player_stand = pygame.image.load()('graphics/player/player_stand.png').convert_alpha()
-player_stand_rect = player_stand.get_rect(center = (400,200))
+player_stand_scaled = pygame.transform.scale(player_stand,(200, 400))
+player_stand_rect = player_stand_scaled.get_rect(center = (400,200))
 
 
 while running:
