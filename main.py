@@ -5,19 +5,19 @@ Made by intern: @bassemfarid, no one or nothing else. 🤖
 """
 
 import pygame
-from sys import exit
+
 
 # Initialize Pygame and create a window
 pygame.init()
 screen = pygame.display.set_mode((800, 400))
 clock = pygame.time.Clock()
 running = True  # Pygame main loop, kills pygame when False
-test_font = pygame.font.SysFont('Arial', 50)
+test_font = pygame.font.Font("Strichpunkt Sans.ttf", 30)
 start_time = 0
 score = 0
 
 def display_score():
-    current_time = pygame.time.get_ticks() - start_time
+    current_time = int((pygame.time.get_ticks() - start_time) / 100)
     score_surf = test_font.render(f'{current_time}',False,(64,64,64))
     score_rect = score_surf.get_rect(center = (400,50))
     screen.blit(score_surf,score_rect)
@@ -95,12 +95,17 @@ while running:
     # When game is over, display game over message
     else: 
         screen.fill("black")
+        game_over_surf = test_font.render("GAME OVER", False, "red")
+        game_over_rect = game_over_surf.get_rect(center = (400, 150))
+        restart_surf = test_font.render("Play again?", False, "red")
+        restart_rect = restart_surf.get_rect(center=(400, 220))
+        screen.blit(game_over_surf, game_over_rect)
+        screen.blit(restart_surf, restart_rect)
 
     # flip the display to put your work on screen
     pygame.display.flip()
 
     clock.tick(60)  # Limits game loop to 60 FPS
-
 
 
 
