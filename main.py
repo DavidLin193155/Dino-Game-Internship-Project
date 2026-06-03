@@ -6,6 +6,17 @@ Made by intern: @bassemfarid, no one or nothing else. 🤖
 
 import pygame
 
+def display_score():
+    current_time = int((pygame.time.get_ticks() - start_time) / 100)
+    score_surf = test_font.render(f'{current_time}',False,(64,64,64))
+    score_rect = score_surf.get_rect(center = (400,50))
+    screen.blit(score_surf,score_rect)
+
+def player_animation():
+    global player_surf, player_index
+    player_index += 0.025
+    if player_index >= len(player_walk): player_index = 0
+    player_surf = player_walk[int(player_index)]
 
 # Initialize Pygame and create a window
 pygame.init()
@@ -15,12 +26,6 @@ running = True  # Pygame main loop, kills pygame when False
 test_font = pygame.font.Font("Strichpunkt Sans.ttf", 30)
 start_time = 0
 score = 0
-
-def display_score():
-    current_time = int((pygame.time.get_ticks() - start_time) / 100)
-    score_surf = test_font.render(f'{current_time}',False,(64,64,64))
-    score_rect = score_surf.get_rect(center = (400,50))
-    screen.blit(score_surf,score_rect)
 
 # Game state variables
 is_playing = True  # Whether in game or in menu
@@ -36,13 +41,16 @@ game_font = pygame.font.Font(pygame.font.get_default_font(), 50)
 #score_rect = score_surf.get_rect(center=(400, 50))
 
 # Load sprite assets
-player_surf = pygame.image.load("graphics/player/player_walk_1.png").convert_alpha()
-player_rect = player_surf.get_rect(bottomleft=(25, GROUND_Y))
+player_walk_1 = pygame.image.load("graphics/player/walking sword down 1st.png").convert_alpha()
+player_walk_2 = pygame.image.load("graphics/player/walking sword up 2nd.png").convert_alpha()
+player_walk_1 = pygame.transform.scale(player_walk_1, (150, 160))
+player_walk_2 = pygame.transform.scale(player_walk_2, (150, 160))
+player_walk = [player_walk_1, player_walk_2]
+player_index = 0
+player_surf = player_walk[player_index]
+player_rect = player_walk_1.get_rect(bottomleft=(25, GROUND_Y))
 egg_surf = pygame.image.load("graphics/egg/egg_1.png").convert_alpha()
 egg_rect = egg_surf.get_rect(bottomleft=(800, GROUND_Y))
-player_stand = pygame.image.load()('graphics/player/player_stand.png').convert_alpha()
-player_stand = pygame.transform.scale(player_stand,(200, 400))
-player_stand_rect = player_stand.get_rect(center = (400,200))
 
 
 while running:
@@ -89,6 +97,7 @@ while running:
         player_rect.y += players_gravity_speed
         if player_rect.bottom > GROUND_Y:
             player_rect.bottom = GROUND_Y
+            player_animation() 
         screen.blit(player_surf, player_rect)
 
         # When player collides with enemy, game ends
