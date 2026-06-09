@@ -8,16 +8,24 @@ import pygame
 
 def display_score():
     current_time = int((pygame.time.get_ticks() - start_time) / 100)
-    score_surf = test_font.render(f'{current_time}',False,(64,64,64))
-    score_rect = score_surf.get_rect(center = (400,50))
+    score_surf = test_font.render(f'{current_time}',False,("white"))
+    score_rect = score_surf.get_rect(center = (400,60))
     screen.blit(score_surf,score_rect)
     return current_time
 
 def player_animation():
     global player_surf, player_index
     player_index += 0.025
-    if player_index >= len(player_walk): player_index = 0
+    if player_index >= len(player_walk):
+        player_index = 0
     player_surf = player_walk[int(player_index)]
+
+def enemy_animation():
+    global egg_surf, enemy_index
+    enemy_index += 0.025
+    if enemy_index >= len(enemy_walk):
+        enemy_index = 0
+    egg_surf = enemy_walk[int(enemy_index)]
 
 # Initialize Pygame and create a window
 pygame.init()
@@ -35,8 +43,8 @@ JUMP_GRAVITY_START_SPEED = -22  # The speed at which the player jumps
 players_gravity_speed = 0  # The current speed at which the player falls
 
 # Load level assets
-robotic_background_SURF = pygame.image.load("graphics/level/robotic background-2.png").convert()
-GROUND_SURF = pygame.image.load("graphics/level/ground.png").convert()
+robotic_background_SURF = pygame.image.load("graphics/level/backgrounddd.png").convert()
+GROUND_SURF = pygame.image.load("graphics/level/floorr.png").convert()
 game_font = pygame.font.Font(pygame.font.get_default_font(), 50)
 #score_surf = game_font.render("SCORE?", False, "Black")
 #score_rect = score_surf.get_rect(center=(400, 50))
@@ -44,15 +52,22 @@ game_font = pygame.font.Font(pygame.font.get_default_font(), 50)
 # Load sprite assets
 player_walk_1 = pygame.image.load("graphics/player/walking sword down.png").convert_alpha()
 player_walk_2 = pygame.image.load("graphics/player/walking sword up.png").convert_alpha()
-player_walk_1 = pygame.transform.scale(player_walk_1, (120, 110))
-player_walk_2 = pygame.transform.scale(player_walk_2, (120, 110))
+player_walk_1 = pygame.transform.scale(player_walk_1, (95, 80))
+player_walk_2 = pygame.transform.scale(player_walk_2, (95, 80))
 player_walk = [player_walk_1, player_walk_2]
 player_index = 0
 player_surf = player_walk[player_index]
 player_rect = player_walk_1.get_rect(bottomleft=(25, GROUND_Y))
-egg_surf = pygame.image.load("graphics/egg/egg_1.png").convert_alpha()
-egg_rect = egg_surf.get_rect(bottomleft=(800, GROUND_Y))
-
+enemy_walk_1 = pygame.image.load("graphics/enemy/robot_1.png").convert_alpha()
+enemy_walk_2 = pygame.image.load("graphics/enemy/robot_2.png").convert_alpha()
+enemy_walk_1 = pygame.transform.scale(enemy_walk_1, (75, 75))
+enemy_walk_2 = pygame.transform.scale(enemy_walk_2, (75, 75))
+enemy_walk = [enemy_walk_1, enemy_walk_2]
+enemy_index = 0
+egg_surf = enemy_walk[enemy_index]
+egg_rect = enemy_walk_1.get_rect(bottomleft=(800, GROUND_Y))
+background_x = 0
+ground_x = 0
 
 while running:
     # Poll for events
@@ -77,17 +92,25 @@ while running:
                 start_time = pygame.time.get_ticks()
 
     if is_playing:
-        screen.fill("purple")  # Wipe the screen
+        background_x -= 1
+        ground_x -= 5
+        if background_x <= -800:
+            background_x = 0
+        if ground_x <= -800:
+            ground_x = 0
 
         # Blit the level assets
-        screen.blit(robotic_background_SURF, (0, 0))
-        screen.blit(GROUND_SURF, (0, GROUND_Y))
+        screen.blit(robotic_background_SURF, (background_x, 0))
+        screen.blit(robotic_background_SURF, (background_x + 800, 0))
+        screen.blit(GROUND_SURF, (ground_x, GROUND_Y))
+        screen.blit(GROUND_SURF, (ground_x + 800, GROUND_Y))
         #pygame.draw.rect(screen, "#c0e8ec", score_rect)
         #pygame.draw.rect(screen, "#c0e8ec", score_rect, 10)
         #screen.blit(score_surf, score_rect)
         score = display_score()
 
         # Adjust egg's horizontal location then blit it
+        enemy_animation()
         egg_rect.x -= 5
         if egg_rect.right <= 0:
             egg_rect.left = 800
