@@ -11,6 +11,7 @@ def display_score():
     score_surf = test_font.render(f'{current_time}',False,(64,64,64))
     score_rect = score_surf.get_rect(center = (400,50))
     screen.blit(score_surf,score_rect)
+    return current_time
 
 def player_animation():
     global player_surf, player_index
@@ -30,21 +31,21 @@ score = 0
 # Game state variables
 is_playing = True  # Whether in game or in menu
 GROUND_Y = 300  # The Y-coordinate of the ground level
-JUMP_GRAVITY_START_SPEED = -20  # The speed at which the player jumps
+JUMP_GRAVITY_START_SPEED = -22  # The speed at which the player jumps
 players_gravity_speed = 0  # The current speed at which the player falls
 
 # Load level assets
-SKY_SURF = pygame.image.load("graphics/level/sky.png").convert()
+robotic_background_SURF = pygame.image.load("graphics/level/robotic background-2.png").convert()
 GROUND_SURF = pygame.image.load("graphics/level/ground.png").convert()
 game_font = pygame.font.Font(pygame.font.get_default_font(), 50)
 #score_surf = game_font.render("SCORE?", False, "Black")
 #score_rect = score_surf.get_rect(center=(400, 50))
 
 # Load sprite assets
-player_walk_1 = pygame.image.load("graphics/player/walking sword down 1st.png").convert_alpha()
-player_walk_2 = pygame.image.load("graphics/player/walking sword up 2nd.png").convert_alpha()
-player_walk_1 = pygame.transform.scale(player_walk_1, (150, 160))
-player_walk_2 = pygame.transform.scale(player_walk_2, (150, 160))
+player_walk_1 = pygame.image.load("graphics/player/walking sword down.png").convert_alpha()
+player_walk_2 = pygame.image.load("graphics/player/walking sword up.png").convert_alpha()
+player_walk_1 = pygame.transform.scale(player_walk_1, (120, 110))
+player_walk_2 = pygame.transform.scale(player_walk_2, (120, 110))
 player_walk = [player_walk_1, player_walk_2]
 player_index = 0
 player_surf = player_walk[player_index]
@@ -73,13 +74,13 @@ while running:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 is_playing = True
                 egg_rect.left = 800
-                start_time = int(pygame.time.get_ticks() / 1000)
+                start_time = pygame.time.get_ticks()
 
     if is_playing:
         screen.fill("purple")  # Wipe the screen
 
         # Blit the level assets
-        screen.blit(SKY_SURF, (0, 0))
+        screen.blit(robotic_background_SURF, (0, 0))
         screen.blit(GROUND_SURF, (0, GROUND_Y))
         #pygame.draw.rect(screen, "#c0e8ec", score_rect)
         #pygame.draw.rect(screen, "#c0e8ec", score_rect, 10)
@@ -109,10 +110,14 @@ while running:
         screen.fill("black")
         game_over_surf = test_font.render("GAME OVER", False, "red")
         game_over_rect = game_over_surf.get_rect(center = (400, 150))
+        final_score_surf = test_font.render(f"Score: {score}", False, "red")
+        final_score_rect = final_score_surf.get_rect(center = (400, 200))
         restart_surf = test_font.render("Play again?", False, "red")
-        restart_rect = restart_surf.get_rect(center=(400, 220))
+        restart_rect = restart_surf.get_rect(center = (400, 250))
         screen.blit(game_over_surf, game_over_rect)
         screen.blit(restart_surf, restart_rect)
+        screen.blit(final_score_surf, final_score_rect)
+        
 
     # flip the display to put your work on screen
     pygame.display.flip()
