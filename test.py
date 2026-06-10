@@ -33,7 +33,7 @@ def enemy_animation():
 def enemy_movement(enemy_list):
     if enemy_list:
         for enemy_rect in enemy_list:
-            enemy_rect.x -= 6
+            enemy_rect.x -= 5
 
             screen.blit(enemy_surf, enemy_rect)
 
@@ -93,7 +93,9 @@ while running:
     # Poll for events
     for event in pygame.event.get():
         if event.type == enemy_timer and is_playing:
-            enemy_list.append(enemy_surf.get_rect(bottomleft = (randint(900, 1200), GROUND_Y)))
+            new_position = randint(900, 1200)
+            if not any(abs(new_position - position.x) < 220 for position in enemy_list):
+                enemy_list.append(enemy_surf.get_rect(bottomleft=(new_position, GROUND_Y)))
             
         # pygame.QUIT --> user clicked X to close your window
         if event.type == pygame.QUIT:
