@@ -21,6 +21,7 @@ def player_animation():
 
 # Initialize Pygame and create a window
 pygame.init()
+pygame.mixer.init()
 screen = pygame.display.set_mode((800, 400))
 clock = pygame.time.Clock()
 running = True  # Pygame main loop, kills pygame when False
@@ -40,6 +41,12 @@ GROUND_SURF = pygame.image.load("graphics/level/ground.png").convert()
 game_font = pygame.font.Font(pygame.font.get_default_font(), 50)
 #score_surf = game_font.render("SCORE?", False, "Black")
 #score_rect = score_surf.get_rect(center=(400, 50))
+pygame.mixer.music.load("audio/bgm.mp3")
+pygame.mixer.music.set_volume(0.7)
+pygame.mixer.music.play(-1)
+jump_sound = pygame.mixer.Sound("audio/jump.mp3")
+block_sound = pygame.mixer.Sound("audio/block.mp3")
+laser_sound = pygame.mixer.Sound("audio/laser.mp3")
 
 # Load sprite assets
 player_walk_1 = pygame.image.load("graphics/player/walking sword down.png").convert_alpha()
@@ -69,6 +76,7 @@ while running:
                 or event.type == pygame.MOUSEBUTTONDOWN
             ) and player_rect.bottom >= GROUND_Y:
                 players_gravity_speed = JUMP_GRAVITY_START_SPEED
+                jump_sound.play()
         else:
             # When player wants to play again by pressing SPACE
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
